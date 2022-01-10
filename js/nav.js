@@ -14,6 +14,14 @@ function navAllStories(evt) {
 
 $body.on("click", "#nav-all", navAllStories);
 
+function navSubmitClick(e){
+  console.debug("navSubmitClick",e)
+  hidePageComponents();
+  $submitForm.show()
+  $allStoriesList.show();
+}
+$navSubmit.on("click", navSubmitClick)
+
 /** Show login/signup on click on "login" */
 
 function navLoginClick(evt) {
@@ -34,3 +42,4 @@ function updateNavOnLogin() {
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
+

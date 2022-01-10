@@ -50,3 +50,23 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+async function submitNewStory(e){
+  e.preventDefault();
+
+  const author = $("#author").val()
+  const title = $("#title").val()
+  const url = $("#url").val()
+  const username = currentUser.username
+  const data = {title, author, url, username}
+
+  const story = await storyList.addStory(currentUser, data)
+  
+  const $story =generateStoryMarkup(story)
+  $allStoriesList.prepend($story)
+
+  $submitForm.trigger("reset")
+  console.log ("sumbitted")
+}
+
+$submitForm.on("submit", submitNewStory)
