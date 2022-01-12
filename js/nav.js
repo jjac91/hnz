@@ -17,8 +17,8 @@ $body.on("click", "#nav-all", navAllStories);
 function navSubmitClick(e){
   console.debug("navSubmitClick",e)
   hidePageComponents();
-  $submitForm.show()
   $allStoriesList.show();
+  $submitForm.show();
 }
 $navSubmit.on("click", navSubmitClick)
 
@@ -43,3 +43,9 @@ function updateNavOnLogin() {
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
+function navFavoritesClick(e){
+  console.debug("navFavoritesClick",e)
+  hidePageComponents();
+  putFavoriteStoriesOnPage()
+}
+$navFavorites.on("click", navFavoritesClick)

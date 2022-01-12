@@ -21,10 +21,14 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
-
+  
   const hostName = story.getHostName();
+
+  const showStar = Boolean(currentUser)
+
   return $(`
       <li id="${story.storyId}">
+      ${showStar ? getStar(story,currentUser) : ""}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -35,6 +39,14 @@ function generateStoryMarkup(story) {
     `);
 }
 
+function getStar(story, user){
+  const isFavorite = user.isFavorite(story)
+  const starVersion = isFavorite ? "fas" : "far"
+  return `
+    <span class="fav-icon">
+      <i class = "${starVersion} fa-star"></i>
+      </span>`
+}
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
@@ -50,6 +62,8 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+
 
 async function submitNewStory(e){
   e.preventDefault();
@@ -70,3 +84,43 @@ async function submitNewStory(e){
 }
 
 $submitForm.on("submit", submitNewStory)
+
+//favorites
+function putFavoriteStoriesOnPage() {
+  console.debug("putFavoriteStoriesOnPage");
+
+  $favoriteStories.empty();
+
+  if(currentUser.favorites.length === 0){
+    $favoriteStories.append("No favorites have been selected")
+  }
+  else{ 
+    for(let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $favoriteStories.append($story);
+    }
+  }
+  $favoriteStories.show();
+}
+
+async function toggleFavorite(e) {
+  console.debug("toggleFavorite")
+
+  const $target = $(e.target)
+  const $targetLi = $target.closest("li")
+  const $targetId = $targetLi.attr("id")
+  const story = storyList.stories.find(function (value) {
+    return value.id === $targetId
+  })
+  console.log(story)
+  if ($target.hasClass("fas")){
+    await currentUser.removeFavorite(story)
+    $target.closest("i").toggleClass("fas far")
+  }
+  else {
+    await currentUser.addFavorite(story)
+    $target.closest("i").toggleClass("fas far")
+  }
+}
+
+$storiesList.on("click",".fav-icon",toggleFavorite)
