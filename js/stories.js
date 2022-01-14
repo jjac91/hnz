@@ -109,9 +109,7 @@ async function toggleFavorite(e) {
   const $target = $(e.target)
   const $targetLi = $target.closest("li")
   const $targetId = $targetLi.attr("id")
-  console.log ($targetId)
   const story = storyList.stories.find(s => s.storyId === $targetId)
-  console.log(story)
   if ($target.hasClass("fas")){
     await currentUser.removeFavorite(story)
     $target.closest("i").toggleClass("fas far")
@@ -124,13 +122,5 @@ async function toggleFavorite(e) {
 
 $storiesList.on("click",".fav-icon",toggleFavorite)
 
-//const story = storyList.stories.find(function (value) {
-//console.log(value.storyId)
-//value.storyId === $targetId
-// })
 
-//
 
-const story = storyList.stories.find(function(value) {
-  return value.storyId === $targetId.storyId
-})
