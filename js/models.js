@@ -204,10 +204,11 @@ class User {
   async addFavorite(story){
     console.log(story)
     console.log(story.storyId)
+    const token = this.token
     debugger
     this.favorites.push(story)
     await axios.post(
-      `${BASE_URL}/users/${this.username}/${story.storyId}`,
+      `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       {token}
     )
   }
@@ -215,12 +216,13 @@ class User {
   async removeFavorite(story){
     console.log(story)
     console.log(story.storyId)
+    const token = this.token
     debugger
     this.favorites = this.favorites.filter(function(value){
       return value.storyId !== story.storyId
     })
     await axios.delete(
-      `${BASE_URL}/users/${this.username}/${story.storyId}`,
+      `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       {token}
     )
   }
